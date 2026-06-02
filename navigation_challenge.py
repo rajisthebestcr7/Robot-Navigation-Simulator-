@@ -11,10 +11,21 @@ x = 0
 y = 0
 moves = 0
 
+goal_x = 3
+goal_y = 3
+
 print("Welcome to Raj's Robot Navigation Simulator!")
 print("The robot starts at position (0, 0).")
+print("Goal Position:", (goal_x, goal_y))
 
 while True:
+
+    if x == goal_x and y == goal_y:
+        print("\nMission Complete!")
+        print("The robot reached the goal.")
+        print("Total Moves:", moves)
+        break
+
     print("\nCurrent Position:", (x, y))
 
     command = input(
@@ -49,5 +60,3 @@ while True:
 
     else:
         print("Invalid command. Please try again.")
-
-
