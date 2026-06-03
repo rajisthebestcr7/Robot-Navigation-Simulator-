@@ -2,39 +2,57 @@
 # Author: Raj Modi
 # Date: June 2026
 # Description:
-# A robot navigation simulator that allows users to move a robot
-# through a simple grid. The robot must avoid obstacles and reach
-# the goal position while tracking the total number of moves made.
-# This project combines concepts such as variables, loops,
-# user input, and decision-making.
+# A robot navigation simulator where the user controls a robot through
+# a grid while avoiding obstacles and reaching a goal position.
+# The simulator tracks movement, displays a visual map, and calculates
+# a score based on navigation efficiency.
 
 x = 0
 y = 0
 moves = 0
 
-goal_x = 3
-goal_y = 3
+goal = (4, 4)
 
 obstacles = [
     (2, 0),
-    (1, 2)
+    (1, 2),
+    (3, 3)
 ]
 
+def display_grid(robot_x, robot_y):
+    print("\nGrid Map:")
+
+    for row in range(5):
+        for col in range(5):
+
+            if (col, row) == (robot_x, robot_y):
+                print("R", end=" ")
+
+            elif (col, row) == goal:
+                print("G", end=" ")
+
+            elif (col, row) in obstacles:
+                print("X", end=" ")
+
+            else:
+                print(".", end=" ")
+
+        print()
+
 print("Welcome to Raj's Robot Navigation Simulator!")
-print("Starting Position:", (x, y))
-print("Goal Position:", (goal_x, goal_y))
-print("Obstacle Positions:", obstacles)
 
 while True:
 
-    if x == goal_x and y == goal_y:
+    display_grid(x, y)
+
+    if (x, y) == goal:
+
         score = 100 - (moves * 5)
 
         if score < 0:
             score = 0
 
         print("\nMission Complete!")
-        print("The robot reached the goal.")
         print("Total Moves:", moves)
         print("Efficiency Score:", score)
         break
@@ -50,10 +68,10 @@ while True:
     new_y = y
 
     if command == "up":
-        new_y += 1
+        new_y -= 1
 
     elif command == "down":
-        new_y -= 1
+        new_y += 1
 
     elif command == "left":
         new_x -= 1
@@ -71,11 +89,16 @@ while True:
         print("Invalid command. Please try again.")
         continue
 
+    if new_x < 0 or new_x > 4 or new_y < 0 or new_y > 4:
+        print("Boundary reached. Move blocked.")
+        continue
+
     if (new_x, new_y) in obstacles:
         print("Obstacle detected. Move blocked.")
+        continue
 
-    else:
-        x = new_x
-        y = new_y
-        moves += 1
-        print("Robot moved successfully.")
+    x = new_x
+    y = new_y
+    moves += 1
+
+    print("Robot moved successfully.")
