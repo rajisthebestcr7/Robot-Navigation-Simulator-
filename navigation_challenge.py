@@ -2,10 +2,9 @@
 # Author: Raj Modi
 # Date: June 2026
 # Description:
-# My first robot navigation simulator. This project combines concepts
-# from my earlier Python projects, including user input, variables,
-# loops, and decision-making. The user controls a robot and moves it
-# around a simple grid while tracking its position.
+# A robot navigation simulator that allows users to move a robot
+# through a simple grid. The robot must avoid obstacles and reach
+# the goal position while tracking the total number of moves made.
 
 x = 0
 y = 0
@@ -14,9 +13,15 @@ moves = 0
 goal_x = 3
 goal_y = 3
 
+obstacles = [
+    (2, 0),
+    (1, 2)
+]
+
 print("Welcome to Raj's Robot Navigation Simulator!")
-print("The robot starts at position (0, 0).")
+print("Starting Position:", (x, y))
 print("Goal Position:", (goal_x, goal_y))
+print("Obstacle Positions:", obstacles)
 
 while True:
 
@@ -32,25 +37,20 @@ while True:
         "Enter a command (up, down, left, right, quit): "
     ).lower()
 
+    new_x = x
+    new_y = y
+
     if command == "up":
-        y += 1
-        moves += 1
-        print("Robot moved up.")
+        new_y += 1
 
     elif command == "down":
-        y -= 1
-        moves += 1
-        print("Robot moved down.")
+        new_y -= 1
 
     elif command == "left":
-        x -= 1
-        moves += 1
-        print("Robot moved left.")
+        new_x -= 1
 
     elif command == "right":
-        x += 1
-        moves += 1
-        print("Robot moved right.")
+        new_x += 1
 
     elif command == "quit":
         print("\nSimulation ended.")
@@ -60,3 +60,13 @@ while True:
 
     else:
         print("Invalid command. Please try again.")
+        continue
+
+    if (new_x, new_y) in obstacles:
+        print("Obstacle detected. Move blocked.")
+
+    else:
+        x = new_x
+        y = new_y
+        moves += 1
+        print("Robot moved successfully.")
