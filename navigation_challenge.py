@@ -5,6 +5,8 @@
 # A robot navigation simulator that allows users to move a robot
 # through a simple grid. The robot must avoid obstacles and reach
 # the goal position while tracking the total number of moves made.
+# This project combines concepts such as variables, loops,
+# user input, and decision-making.
 
 x = 0
 y = 0
@@ -26,12 +28,19 @@ print("Obstacle Positions:", obstacles)
 while True:
 
     if x == goal_x and y == goal_y:
+        score = 100 - (moves * 5)
+
+        if score < 0:
+            score = 0
+
         print("\nMission Complete!")
         print("The robot reached the goal.")
         print("Total Moves:", moves)
+        print("Efficiency Score:", score)
         break
 
     print("\nCurrent Position:", (x, y))
+    print("Moves Made:", moves)
 
     command = input(
         "Enter a command (up, down, left, right, quit): "
