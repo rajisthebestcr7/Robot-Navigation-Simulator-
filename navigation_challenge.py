@@ -19,6 +19,7 @@ obstacles = [
     (3, 3)
 ]
 
+
 def display_grid(robot_x, robot_y):
     print("\nGrid Map:")
 
@@ -39,7 +40,9 @@ def display_grid(robot_x, robot_y):
 
         print()
 
+
 print("Welcome to Raj's Robot Navigation Simulator!")
+
 print("\nChoose a mode:")
 print("1. Manual Navigation")
 print("2. Auto Navigation")
@@ -94,24 +97,28 @@ while True:
             break
 
         else:
-            print("Invalid command. Please try again.")
+            print("Invalid command.")
             continue
 
     elif mode == "2":
 
-        if x < goal[0]:
+        print("Auto Navigation Mode Active")
+
+        if x < goal[0] and (x + 1, y) not in obstacles:
             new_x += 1
 
-        elif x > goal[0]:
-            new_x -= 1
-
-        elif y < goal[1]:
+        elif y < goal[1] and (x, y + 1) not in obstacles:
             new_y += 1
 
-        elif y > goal[1]:
+        elif x > goal[0] and (x - 1, y) not in obstacles:
+            new_x -= 1
+
+        elif y > goal[1] and (x, y - 1) not in obstacles:
             new_y -= 1
 
-        print("Auto Navigation: Robot selected its next move.")
+        else:
+            print("No safe automatic move available.")
+            break
 
     else:
         print("Invalid mode selected.")
@@ -123,17 +130,6 @@ while True:
 
     if (new_x, new_y) in obstacles:
         print("Obstacle detected. Move blocked.")
-
-        if mode == "2":
-            if y < goal[1]:
-                new_y = y + 1
-                new_x = x
-
-                if (new_x, new_y) not in obstacles and new_y <= 4:
-                    x = new_x
-                    y = new_y
-                    moves += 1
-
         continue
 
     x = new_x
