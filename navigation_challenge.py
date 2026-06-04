@@ -2,26 +2,47 @@
 # Author: Raj Modi
 # Date: June 2026
 # Description:
-# A robot navigation simulator where users can control a robot
-# manually or allow it to navigate automatically. The simulator
-# includes obstacle avoidance, boundary detection, a visual grid,
-# move tracking, and an efficiency score.
+# Robot Navigation Simulator with manual navigation,
+# automatic navigation, multiple maps, scoring,
+# obstacle detection, and difficulty levels.
+
+moves = 0
+
+print("Welcome to Raj's Robot Navigation Simulator!")
+
+print("\nSelect Difficulty:")
+print("1. Easy")
+print("2. Medium")
+print("3. Hard")
+
+difficulty = input("Enter 1, 2, or 3: ")
+
+if difficulty == "1":
+    goal = (4, 4)
+    obstacles = [(2, 0), (1, 2)]
+    difficulty_name = "Easy"
+
+elif difficulty == "2":
+    goal = (4, 4)
+    obstacles = [(1, 1), (2, 1), (3, 2), (1, 3)]
+    difficulty_name = "Medium"
+
+elif difficulty == "3":
+    goal = (4, 4)
+    obstacles = [(1, 0), (1, 1), (2, 2), (3, 2)]
+    difficulty_name = "Hard"
+
+else:
+    print("Invalid selection.")
+    quit()
 
 x = 0
 y = 0
-moves = 0
-
-goal = (4, 4)
-
-obstacles = [
-    (2, 0),
-    (1, 2),
-    (3, 3)
-]
 
 
 def display_grid(robot_x, robot_y):
-    print("\nGrid Map:")
+    print("\nDifficulty:", difficulty_name)
+    print("Grid Map:")
 
     for row in range(5):
         for col in range(5):
@@ -41,9 +62,7 @@ def display_grid(robot_x, robot_y):
         print()
 
 
-print("Welcome to Raj's Robot Navigation Simulator!")
-
-print("\nChoose a mode:")
+print("\nChoose Navigation Mode:")
 print("1. Manual Navigation")
 print("2. Auto Navigation")
 
@@ -61,7 +80,7 @@ while True:
             score = 0
 
         print("\nMission Complete!")
-        print("The robot reached the goal.")
+        print("Difficulty:", difficulty_name)
         print("Total Moves:", moves)
         print("Efficiency Score:", score)
         break
@@ -92,8 +111,6 @@ while True:
 
         elif command == "quit":
             print("\nSimulation ended.")
-            print("Final Position:", (x, y))
-            print("Total Moves:", moves)
             break
 
         else:
@@ -101,8 +118,6 @@ while True:
             continue
 
     elif mode == "2":
-
-        print("Auto Navigation Mode Active")
 
         if x < goal[0] and (x + 1, y) not in obstacles:
             new_x += 1
@@ -119,6 +134,8 @@ while True:
         else:
             print("No safe automatic move available.")
             break
+
+        print("Auto Navigation Mode Active")
 
     else:
         print("Invalid mode selected.")
