@@ -4,7 +4,8 @@
 # Description:
 # Robot Navigation Simulator with manual navigation,
 # automatic navigation, multiple difficulty levels,
-# obstacle detection, scoring, and improved pathfinding.
+# obstacle detection, scoring, improved pathfinding,
+# and navigation statistics.
 
 moves = 0
 
@@ -38,6 +39,7 @@ else:
 
 x = 0
 y = 0
+mission_success = False
 
 
 def display_grid(robot_x, robot_y):
@@ -77,6 +79,24 @@ def is_safe(position):
     return True
 
 
+def show_dashboard():
+    score = 100 - (moves * 5)
+
+    if score < 0:
+        score = 0
+
+    print("\n==============================")
+    print("NAVIGATION STATISTICS")
+    print("==============================")
+    print("Difficulty:", difficulty_name)
+    print("Mission Success:", mission_success)
+    print("Total Moves:", moves)
+    print("Efficiency Score:", score)
+    print("Goal Position:", goal)
+    print("Final Position:", (x, y))
+    print("==============================")
+
+
 print("\nChoose Navigation Mode:")
 print("1. Manual Navigation")
 print("2. Auto Navigation")
@@ -89,15 +109,12 @@ while True:
 
     if (x, y) == goal:
 
-        score = 100 - (moves * 5)
-
-        if score < 0:
-            score = 0
+        mission_success = True
 
         print("\nMission Complete!")
-        print("Difficulty:", difficulty_name)
-        print("Total Moves:", moves)
-        print("Efficiency Score:", score)
+        print("The robot reached the goal.")
+
+        show_dashboard()
         break
 
     print("\nCurrent Position:", (x, y))
@@ -125,7 +142,8 @@ while True:
             new_x += 1
 
         elif command == "quit":
-            print("\nSimulation ended.")
+            print("\nSimulation ended by user.")
+            show_dashboard()
             break
 
         else:
@@ -161,6 +179,7 @@ while True:
 
         if best_move is None:
             print("No safe path found.")
+            show_dashboard()
             break
 
         new_x, new_y = best_move
