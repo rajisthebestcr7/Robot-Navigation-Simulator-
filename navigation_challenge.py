@@ -3,8 +3,8 @@
 # Date: June 2026
 # Description:
 # Robot Navigation Simulator with manual navigation,
-# automatic navigation, multiple maps, scoring,
-# obstacle detection, and difficulty levels.
+# automatic navigation, multiple difficulty levels,
+# obstacle detection, scoring, and improved pathfinding.
 
 moves = 0
 
@@ -33,7 +33,7 @@ elif difficulty == "3":
     difficulty_name = "Hard"
 
 else:
-    print("Invalid selection.")
+    print("Invalid difficulty selected.")
     quit()
 
 x = 0
@@ -60,6 +60,21 @@ def display_grid(robot_x, robot_y):
                 print(".", end=" ")
 
         print()
+
+
+def is_safe(position):
+    x_pos, y_pos = position
+
+    if x_pos < 0 or x_pos > 4:
+        return False
+
+    if y_pos < 0 or y_pos > 4:
+        return False
+
+    if position in obstacles:
+        return False
+
+    return True
 
 
 print("\nChoose Navigation Mode:")
@@ -119,34 +134,43 @@ while True:
 
     elif mode == "2":
 
-        if x < goal[0] and (x + 1, y) not in obstacles:
-            new_x += 1
+        print("Auto Navigation Mode Active")
 
-        elif y < goal[1] and (x, y + 1) not in obstacles:
-            new_y += 1
+        possible_moves = [
+            (x + 1, y),
+            (x, y + 1),
+            (x - 1, y),
+            (x, y - 1)
+        ]
 
-        elif x > goal[0] and (x - 1, y) not in obstacles:
-            new_x -= 1
+        best_move = None
+        best_distance = 999
 
-        elif y > goal[1] and (x, y - 1) not in obstacles:
-            new_y -= 1
+        for move in possible_moves:
 
-        else:
-            print("No safe automatic move available.")
+            if is_safe(move):
+
+                distance = (
+                    abs(move[0] - goal[0]) +
+                    abs(move[1] - goal[1])
+                )
+
+                if distance < best_distance:
+                    best_distance = distance
+                    best_move = move
+
+        if best_move is None:
+            print("No safe path found.")
             break
 
-        print("Auto Navigation Mode Active")
+        new_x, new_y = best_move
 
     else:
         print("Invalid mode selected.")
         break
 
-    if new_x < 0 or new_x > 4 or new_y < 0 or new_y > 4:
-        print("Boundary reached. Move blocked.")
-        continue
-
-    if (new_x, new_y) in obstacles:
-        print("Obstacle detected. Move blocked.")
+    if not is_safe((new_x, new_y)):
+        print("Move blocked.")
         continue
 
     x = new_x
